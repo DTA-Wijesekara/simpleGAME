@@ -1,11 +1,10 @@
 package myGame;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Game {
+    static ArrayList<Integer> userlocations=new ArrayList<Integer>();
+    static ArrayList<Integer> computerlocations=new ArrayList<Integer>();
     public static void main(String args[]){
         char[][]box={
                 {' ','|',' ','|',' '},
@@ -46,9 +45,11 @@ public class Game {
         char symbol=' ';
         if(type.equals("user")){
             symbol='X';
+            userlocations.add(location);
         }
         if(type.equals("computer")){
             symbol='0';
+            computerlocations.add(location);
         }
         switch (location){
             case 1:box[0][0]=symbol;break;
@@ -63,7 +64,7 @@ public class Game {
         }
     }
 //    adding conditions and validations
-    public static void validation(){
+    public static String validation(){
         List r1 = Arrays.asList(1,2,3);
         List r2 = Arrays.asList(4,5,6);
         List r3 = Arrays.asList(7,8,9);
@@ -71,6 +72,29 @@ public class Game {
         List c2 = Arrays.asList(2,5,8);
         List c3 = Arrays.asList(3,6,9);
         List d1 = Arrays.asList(1,5,9);
-        List d1 = Arrays.asList(3,5,7);
+        List d2 = Arrays.asList(3,5,7);
+
+        List<List>win = new ArrayList<List>();
+        win.add(r1);
+        win.add(r2);
+        win.add(r3);
+        win.add(c1);
+        win.add(c2);
+        win.add(c3);
+        win.add(d1);
+        win.add(d2);
+
+        for (List list : win) {
+            if(userlocations.containsAll(list)){
+                return "you won";
+            }
+            else if(computerlocations.containsAll(list)){
+                return "you lose";
+            }
+            else if(userlocations.size()+computerlocations.size()==9){
+                return "game drawn";
+            }
+        }
+        return "";
     }
 }
