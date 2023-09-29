@@ -5,6 +5,8 @@ import java.util.*;
 public class Game {
     static ArrayList<Integer> userlocations=new ArrayList<Integer>();
     static ArrayList<Integer> computerlocations=new ArrayList<Integer>();
+
+//    main methord
     public static void main(String args[]){
         char[][]box={
                 {' ','|',' ','|',' '},
@@ -12,21 +14,41 @@ public class Game {
                 {' ','|',' ','|',' '},
                 {'-','+','-','+','-'},
                 {' ','|',' ','|',' '}};
-
-        while (true){
+        gamelayout(box);
+        String result;
+        do{
             //        users turn using scanner
             Scanner input = new Scanner(System.in);
-            System.out.println("enter your location of placement:");
+            System.out.print("enter your location of placement:X:");
             int location1=input.nextInt();
+//            checking that space alredy filled or not
+            while (userlocations.contains(location1)||computerlocations.contains(location1)){
+                System.out.println("enter another location:X:");
+                location1=input.nextInt();
+            }
             getuserinput(box,location1,"user");
+            gamelayout(box);
+            result=validation();
+            if (result=="you won" || result=="game drawn"){
+                System.out.println(result);
+                return;
+            }
+            System.out.println();
 
 //        computers turn using random
             Random rand=new Random();
             int location2=rand.nextInt(9)+1;
+//            checking that space alredy filled or not
+            while (userlocations.contains(location2)||computerlocations.contains(location2)){
+                location2=rand.nextInt(9)+1;
+            }
             getuserinput(box,location2,"computer");
-
+            System.out.println("computers turn:*:");
             gamelayout(box);
-        }
+            result=validation();
+            System.out.println(result);
+        }while ((result!="you won")&&(result!="you lose")&&(result!="game drawn"));
+        return;
     }
 
 //    methord for printing
@@ -48,7 +70,7 @@ public class Game {
             userlocations.add(location);
         }
         if(type.equals("computer")){
-            symbol='0';
+            symbol='*';
             computerlocations.add(location);
         }
         switch (location){
